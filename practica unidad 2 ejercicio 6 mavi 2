@@ -1,0 +1,39 @@
+#include <iostream>
+#include <Box2D/Box2D.h>
+#include <SDL2/SDL.h>
+
+const float32 WORLD_WIDTH = 100.0f;
+const float32 WORLD_HEIGHT = 100.0f;
+const float32 PROJECTILE_RADIUS = 2.0f;
+const float32 CANNON_X = 5.0f;
+const float32 CANNON_Y = 5.0f;
+
+int main(int argc, char* argv[]) {
+    // Inicialización de SDL
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
+        return 1;
+    }
+
+    SDL_Window* window = SDL_CreateWindow("Juego de Cañón", 100, 100, 800, 600, SDL_WINDOW_SHOWN);
+    if (window == nullptr) {
+        std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
+        SDL_Quit();
+        return 1;
+    }
+
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (renderer == nullptr) {
+        SDL_DestroyWindow(window);
+        std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+        SDL_Quit();
+        return 1;
+    }
+
+    // Configuración del mundo de Box2D
+    b2Vec2 gravity(0.0f, -9.8f);
+    b2World world(gravity);
+
+    // Creación del cañón
+    b2BodyDef cannonBodyDef;
+    cannonBodyDef.position.Set(CANNON_X, CANN
